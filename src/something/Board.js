@@ -62,6 +62,22 @@ export const buildBoard = ({ rows, columns }) => {
         })
       }
 
+      const blackRow = rows[0].map((_) => ({ ...defaultCell }));
+      let linesCleared = 0;
+      rows = rows.reduce((acc, row) => {
+        if (row.every((column) => column.occupied)) {
+          linesCleared++;
+          acc.unshift([...blackRow]);
+        } else {
+          acc.push(row);
+        }
+      return acc;
+    }, []);
+
+    if (linesCleared > 0) {
+      addLinesCleared(linesCleared)
+    };
+
       rows = transferToBoard({
         className: tetromino.className,
         isOccupied: player.collided,
